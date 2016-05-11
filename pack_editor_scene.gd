@@ -22,7 +22,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 # Run this script with `Scene`->`Run Script` (Shift+Ctrl+R).
-# Scene file will be saved as `res://editor_scene.tscn`.
+# Scene file will be saved as `res://editor_scene.scn`.
 # The resulting file has little use, since many node types used by the
 # editor are not exposed.
 
@@ -36,7 +36,7 @@ func _run():
 	acquire_children( editor )
 	var pckscn = PackedScene.new()
 	pckscn.pack( editor )
-	ResourceSaver.save( "res://editor_scene.tscn", pckscn )
+	ResourceSaver.save( "res://editor_scene.scn", pckscn )
 
 func acquire_children( node ):
 	for child in node.get_children():
