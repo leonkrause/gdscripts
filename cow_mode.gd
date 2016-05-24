@@ -26,47 +26,54 @@ extends MainLoop
 func _iteration( delta ): return true # quit after _initialize()
 
 func _initialize():
+
+	#============================================================#
+	# WARNING: This is unintended and will be removed eventually #
+	#============================================================#
 	
 	# create Dictionary per literal => shared mode
-	var literal_dict_original = {}
+	var literal_dict = {}
 	# create Dictionary per constructor => copy-on-write ('COW') mode
-	var ctor_dict_original = Dictionary()
+	var ctor_dict = Dictionary()
 	
 	# assign shared dict to var => reference
-	var literal_dict_copy = literal_dict_original
+	var literal_dict_copy = literal_dict
 	# assign COW dict to var => reference until written to
-	var ctor_dict_copy = ctor_dict_original
+	var ctor_dict_copy = ctor_dict
 	
 	# Add key-value pair to references
 	literal_dict_copy.test = false
 	ctor_dict_copy.test = false
 	
 	# key added to the original dictionary
-	prints( "literal_dict_original.size():", literal_dict_original.size() )
-	# literal_dict_copy still references literal_dict_original
-	prints( "literal_dict_copy.size():", literal_dict_copy.size() )
+	prints( "literal_dict.size():", literal_dict.size() ) # == 1
+	# literal_dict_copy still references literal_dict
+	prints( "literal_dict_copy.size():", literal_dict_copy.size() ) # == 1
 	
 	# original remains unchanged
-	prints( "ctor_dict_original.size():", ctor_dict_original.size() )
+	prints( "ctor_dict.size():", ctor_dict.size() ) # == 0
 	# key added to copy of the original dictionary,
-	# ctor_dict_copy no longer references ctor_dict_original
-	prints( "ctor_dict_copy.size():", ctor_dict_copy.size() )
+	# ctor_dict_copy no longer references ctor_dict
+	prints( "ctor_dict_copy.size():", ctor_dict_copy.size() ) # == 1
 	
 	
-	# same goes for arrays
-	var literal_array_original = []
-	var ctor_array_original = Array()
+	# Same goes for arrays:
 	
-	var literal_array_copy = literal_array_original
-	var ctor_array_copy = ctor_array_original
+	var literal_array = []
+	var ctor_array = Array()
+	
+	var literal_array_copy = literal_array
+	var ctor_array_copy = ctor_array
 	
 	literal_array_copy.push_back( "test" )
 	ctor_array_copy.push_back( "test" )
 	
-	prints( "literal_array_original.is_shared():", literal_array_original.is_shared() )
-	prints( "literal_array_original.size():", literal_array_original.size() )
-	prints( "literal_array_copy.size():", literal_array_copy.size() ) # still a reference to literal_array_copy
+	prints( "literal_array.is_shared():", literal_array.is_shared() ) # == True
+	prints( "literal_array.size():", literal_array.size() ) # == 1
+	# still a reference to literal_array_copy after push_back
+	prints( "literal_array_copy.size():", literal_array_copy.size() ) # == 1
 	
-	prints( "ctor_array_original.is_shared():", ctor_array_original.is_shared() )
-	prints( "ctor_array_original.size():", ctor_array_original.size() )
-	prints( "ctor_array_copy.size():", ctor_array_copy.size() ) # no longer a reference to ctor_array_original after push_back
+	prints( "ctor_array.is_shared():", ctor_array.is_shared() ) # == False
+	prints( "ctor_array.size():", ctor_array.size() ) # == 0
+	# no longer a reference to ctor_array after push_back
+	prints( "ctor_array_copy.size():", ctor_array_copy.size() ) # == 1
