@@ -21,7 +21,8 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-# Run this script with `Scene`->`Run Script` (Shift+Ctrl+R).
+# This script will pack the Godot Engine editor itself as a scene.
+# Run it with `Scene`->`Run Script` (Shift+Ctrl+R).
 # Scene file will be saved as `res://editor_scene.scn`.
 # The resulting file has little use, since many node types used by the
 # editor are not exposed.
