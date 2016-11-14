@@ -22,33 +22,41 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 func _init():
-	printerr( "Instantiating library `Util`" )
+	printerr( "Instantiating library `Debug`" )
 	assert( !self )
 
-static func ensure_connect( emitter, signal_name, target, function_name, binds=[], flags=0 ):
-	if not emitter.is_connected( signal_name, target, function_name ):
-		emitter.connect( signal_name, target, function_name, binds, flags )
+const TYPE_STRING =\
+{
+	TYPE_NIL: "NIL",
+	TYPE_BOOL: "BOOL",
+	TYPE_INT: "INT",
+	TYPE_REAL: "REAL",
+	TYPE_STRING: "STRING",
+	TYPE_VECTOR2: "VECTOR2",
+	TYPE_RECT2: "RECT2",
+	TYPE_VECTOR3: "VECTOR3",
+	TYPE_MATRIX32: "MATRIX32",
+	TYPE_PLANE: "PLANE",
+	TYPE_QUAT: "QUAT",
+	TYPE_AABB: "AABB",
+	TYPE_MATRIX3: "MATRIX3",
+	TYPE_TRANSFORM: "TRANSFORM",
+	TYPE_COLOR: "COLOR",
+	TYPE_IMAGE: "IMAGE",
+	TYPE_NODE_PATH: "NODE_PATH",
+	TYPE_RID: "RID",
+	TYPE_OBJECT: "OBJECT",
+	TYPE_INPUT_EVENT: "INPUT_EVENT",
+	TYPE_DICTIONARY: "DICTIONARY",
+	TYPE_ARRAY: "ARRAY",
+	TYPE_RAW_ARRAY: "RAW_ARRAY",
+	TYPE_INT_ARRAY: "INT_ARRAY",
+	TYPE_REAL_ARRAY: "REAL_ARRAY",
+	TYPE_STRING_ARRAY: "STRING_ARRAY",
+	TYPE_VECTOR2_ARRAY: "VECTOR2_ARRAY",
+	TYPE_VECTOR3_ARRAY: "VECTOR3_ARRAY",
+	TYPE_COLOR_ARRAY: "COLOR_ARRAY"
+}
 
-static func ensure_add_child( parent, child ):
-	if not child.is_inside_tree():
-		parent.add_child( child )
-		return
-	assert( child in parent.get_children() )
-
-static func fy_shuffle( ARRAY ):
-	var shuffled = []
-	shuffled.resize( ARRAY.size() )
-	for i in range( ARRAY.size() ):
-		var r = randi() % (i+1)
-		if r != i: shuffled[i] = shuffled[r]
-		shuffled[r] = ARRAY[i]
-	return shuffled
-
-static func fy_shuffle_inplace( array ):
-	assert( array.is_shared() )
-	for i in range(array.size()-2):
-		var r = randi() % array.size()
-		var t = array[i]
-		array[i] = array[r]
-		array[r] = t
-	return array
+static func type_string_of( variable ):
+	return TYPE_STRING[typeof(variable)]
