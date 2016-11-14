@@ -29,11 +29,27 @@ static func ensure_connect( emitter, signal_name, target, function_name, binds=[
 	if not emitter.is_connected( signal_name, target, function_name ):
 		emitter.connect( signal_name, target, function_name, binds, flags )
 
+static func ensure_disconnect( emitter, signal_name, target, function_name ):
+	if emitter.is_connected( signal_name, target, function_name ):
+		emitter.disconnect( signal_name, target, function_name )
+
 static func ensure_add_child( parent, child ):
 	if not child.is_inside_tree():
 		parent.add_child( child )
 		return
 	assert( child in parent.get_children() )
+
+static func ensure_insert( container, value ):
+	if not value in container:
+		if typeof( container ) == TYPE_ARRAY:
+			container.push_back( value )
+		elif typeof( container ) == TYPE_DICTIONARY:
+			container[value] = null
+		else: assert( false )
+
+static func ensure_erase( container, value ):
+	if value in container:
+		container.erase( value )
 
 static func fy_shuffle( ARRAY ):
 	var shuffled = []
@@ -52,3 +68,24 @@ static func fy_shuffle_inplace( array ):
 		array[i] = array[r]
 		array[r] = t
 	return array
+
+static func clear_key_event_mods( event ):
+	if event.type==InputEvent.KEY:
+		for mod in ['alt','control','shift','meta']:
+			event[mod] = false
+	return event
+
+static func free_arg1( to_free, unused_arg0=null, unused_arg1=null, unused_arg2=null, unused_arg3=null ):
+	to_free.free()
+
+static func free_arg2( unused_arg0, to_free, unused_arg1=null, unused_arg2=null, unused_arg3=null ):
+	to_free.free()
+
+static func free_arg3( unused_arg0, unused_arg1, to_free, unused_arg2=null, unused_arg3=null ):
+	to_free.free()
+
+static func free_arg4( unused_arg0, unused_ar1, unused_arg2, to_free, unused_arg3=null ):
+	to_free.free()
+
+static func free_arg5( unused_arg0, unused_arg1, unused_arg2, unused_arg3, to_free ):
+	to_free.free()
