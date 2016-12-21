@@ -24,10 +24,28 @@
 extends Node
 
 func _init():
+	
 	randomize()
+	if OS.is_debug_build(): AS.set_stream_global_volume_scale( 0.0 )
+	
+	if not InputMap.has_action('meta_fullscreen'):
+		InputMap.add_action('meta_fullscreen')
+	if not InputMap.has_action('meta_quit'):
+		InputMap.add_action('meta_quit')
+	
+	var ev = InputEvent()
+	ev.type = InputEvent.KEY
+	ev.pressed = true
+	ev.echo = false
+	ev.scancode = KEY_F11
+	if not InputMap.action_has_event('meta_fullscreen', ev):
+		InputMap.action_add_event('meta_fullscreen', ev)
+	ev.scancode = KEY_ESCAPE
+	if not InputMap.action_has_event('meta_quit', ev):
+		InputMap.action_add_event('meta_quit', ev)
+	
 	set_process_unhandled_input( true )
 	set_pause_mode( PAUSE_MODE_PROCESS )
-	if OS.is_debug_build(): AS.set_stream_global_volume_scale( 0.0 )
 
 func _unhandled_input( event ):
 	if event.is_action_released( 'meta_quit' ):
